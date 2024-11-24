@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "deno -RWES npm:plop --plopfile=main.ts"
+  },
+  "imports": {
+    "inquirer": "npm:inquirer@^12.1.0",
+    "plop": "npm:plop@^4.0.1",
+    "xstate": "npm:xstate@^5.19.0"
+  }
+}
