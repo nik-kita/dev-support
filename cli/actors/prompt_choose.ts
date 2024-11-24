@@ -3,7 +3,7 @@ import { fromCallback } from "xstate";
 import { z } from "zod";
 
 const EvPromptChoose = z.object({
-  type: z.string(),
+  type: z.literal("list"),
   message: z.string(),
   choices: z.array(z.object({
     name: z.string().optional(),

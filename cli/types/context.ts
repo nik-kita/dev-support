@@ -3,5 +3,5 @@ import { actors } from "../actors/index.ts";
 
 export const context = {} as {
   prompt_choose: ActorRefFrom<typeof actors["prompt_choose"]>;
-  purpose?: "use generator" | "extend generator";
+  prompt_input: ActorRefFrom<typeof actors["prompt_input"]>;
 };
