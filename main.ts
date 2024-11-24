@@ -1,6 +1,6 @@
 import type { NodePlopAPI } from "plop";
 import { createActor } from "xstate";
-import { machine } from "./cli.ts";
+import { machine } from "./cli/index.ts";
 
 const cli = createActor(machine);
 
