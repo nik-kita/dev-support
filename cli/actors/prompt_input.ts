@@ -1,15 +1,8 @@
 import inquirer from "inquirer";
 import { fromCallback } from "xstate";
-import { z } from "zod";
+import { EvCliMachine, EvPromptInput } from "../types/events.ts";
 
-const EvPromptInput = z.object({
-  type: z.literal("input"),
-  message: z.string(),
-});
-
-type EvPromptInput = z.infer<typeof EvPromptInput>;
-
-export const prompt_input = fromCallback<EvPromptInput>(
+export const prompt_input = fromCallback<EvCliMachine>(
   ({ sendBack, receive }) => {
     receive(async (ev) => {
       const prompt = EvPromptInput.parse(ev);
@@ -18,9 +11,11 @@ export const prompt_input = fromCallback<EvPromptInput>(
         name: prompt.type,
         message: prompt.message,
       }]);
-      sendBack({
-        type: answer[prompt.type],
-      });
+      const cbEv = {
+        type: prompt.cb_ev_type,
+        value: answer[prompt.type],
+      };
+      sendBack(cbEv);
     });
   },
 );

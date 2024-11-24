@@ -15,7 +15,5 @@ const cli_output = await new Promise((resolve, reject) => {
   });
 });
 
-console.log(cli_output);
-
 export default function (plop: NodePlopAPI) {
 }

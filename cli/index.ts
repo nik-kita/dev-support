@@ -1,20 +1,14 @@
-import { setup } from "xstate";
-import { context } from "./types/context.ts";
-import { actors } from "./actors/index.ts";
 import { actions } from "./actions/index.ts";
+import { actors } from "./actors/index.ts";
+import { types } from "./types/index.ts";
+
+//-------------------------------------------
+import { setup } from "xstate";
 
 export const machine = setup({
-  actors,
-  types: {
-    context,
-    events: {} as
-      | { type: "I want to generate starter template" }
-      | { type: "I want to extend this generator" }
-      | { type: "I want to make file from my custom blueprint" }
-      | { type: "simply ctrl+v" }
-      | { type: "specify path to it" },
-  },
   actions,
+  actors,
+  types,
 }).createMachine({
   context: ({ spawn }) => {
     const prompt_choose = spawn("prompt_choose");
@@ -23,6 +17,9 @@ export const machine = setup({
       prompt_choose,
       prompt_input,
     };
+  },
+  output: ({ context }) => {
+    return context.output;
   },
   id: "main",
   initial: "Hello",
@@ -60,7 +57,7 @@ export const machine = setup({
       states: {
         "Uploading file content": {
           on: {
-            "simply ctrl+v": {
+            "directly ctrl+c ctrl+v": {
               target: "Read content from prompt",
             },
             "specify path to it": {
@@ -72,12 +69,48 @@ export const machine = setup({
           },
         },
         "Read content from prompt": {
+          on: {
+            "input:answer content": {
+              target: "Read dictionary for content",
+              actions: {
+                type: "assign_content",
+              },
+            },
+          },
           entry: {
             type: "Paste your file's content",
           },
         },
         "Read file by path": {},
+        "Read dictionary for content": {
+          on: {
+            "input:answer dictionary": {
+              target: "Complete",
+              actions: {
+                type: "assign_dictionary",
+              },
+            },
+          },
+          entry: {
+            type:
+              "Paste object that is represent variables dictionary for this content",
+          },
+        },
+        Complete: {
+          type: "final",
+          entry: [
+            {
+              type: "assign_output",
+            },
+          ],
+        },
       },
+      onDone: {
+        target: "Exit",
+      },
+    },
+    "Exit": {
+      type: "final",
     },
   },
 });
