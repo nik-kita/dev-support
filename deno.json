@@ -1,8 +1,9 @@
 {
   "tasks": {
-    "start": "deno -RWES npm:plop --plopfile=main.ts"
+    "start": "deno -A npm:plop --plopfile=main.ts"
   },
   "imports": {
+    "@inquirer/prompts": "npm:@inquirer/prompts@^7.1.0",
     "inquirer": "npm:inquirer@^12.1.0",
     "plop": "npm:plop@^4.0.1",
     "xstate": "npm:xstate@^5.19.0",

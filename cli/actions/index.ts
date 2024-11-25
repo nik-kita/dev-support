@@ -8,9 +8,9 @@ export const actions = {
       type: "list",
       message: "What do you want to do?",
       choices: [
+        { value: "I want to make file from my custom blueprint" },
         { value: "I want to generate starter template" },
         { value: "I want to extend this generator" },
-        { value: "I want to make file from my custom blueprint" },
       ],
     });
   },
@@ -88,7 +88,8 @@ export const actions = {
         ...context,
         output: {
           content: context.content,
-          dictionary: context.dictionary,
+          dictionary: JSON.parse(context.dictionary || "{}"),
+          type: "custom blueprint",
         },
       };
     },

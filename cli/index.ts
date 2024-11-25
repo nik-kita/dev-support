@@ -19,7 +19,7 @@ export const machine = setup({
     };
   },
   output: ({ context }) => {
-    return context.output;
+    return context.output!;
   },
   id: "main",
   initial: "Hello",
