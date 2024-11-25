@@ -1,0 +1,30 @@
+import { NodePlopAPI } from "plop";
+
+export async function gen_{{name}}(
+  plop: NodePlopAPI,
+  options: // dd_options_bb
+  {}, // dd_RM_LINE_bb
+) {
+  await Deno.mkdir(".output", { recursive: true });
+
+  plop.setGenerator("{{name}}", {
+    description: "{{description}}",
+    prompts: // dd_prompts_bb
+      [], // dd_RM_LINE_bb
+      // dd_REPLACE_LINE_bb,
+    actions(answers) {
+      const { ...data } = answers || {};
+      const actions = [
+        {
+          type: "add",
+          path: `.output/{{name}}/{{name}}-${Date.now()}.ts`,
+          templateFile: `templates/{{name}}.ts.hbs`,
+          data,
+        },
+      ];
+
+      return actions;
+    },
+  });
+}
+
