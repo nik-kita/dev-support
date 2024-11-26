@@ -47,11 +47,8 @@ export async function gen_file_by_custom_template(
         /**
          * @description Save this template for future use
          */
-        actions.push({
-          type: "add",
-          path: `templates/${__save__}.ts.hbs`,
-          template: originalContent,
-        });
+        const savePath = `templates/${__save__}.ts.hbs`;
+        Deno.writeTextFileSync(savePath, options.content);
         /**
          * @description Generate generator for this template
          */
@@ -66,10 +63,10 @@ export async function gen_file_by_custom_template(
             },
             transform(content: string) {
               const transformedContent = content
-                .replaceAll(/^\s+\/\/ dd_RM_LINE_bb\s+$/g, "")
-                .replaceAll(/^\s+\/\/ dd_REPLACE_LINE_bb/g, "")
-                .replace("// dd_options_bb", "// TODO options")
-                .replace("// dd_prompts_bb", "// TODO prompts");
+                .replaceAll(/^\s*\/\/ dd_RM_LINE_bb\s*$/g, "")
+                .replaceAll(/^\s*\/\/ dd_REPLACE_LINE_bb/g, "")
+                .replaceAll("// dd_options_bb", "// TODO options")
+                .replaceAll("// dd_prompts_bb", "// TODO prompts");
 
               return transformedContent;
             },
