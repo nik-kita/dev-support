@@ -10,7 +10,6 @@ export async function gen_file_by_custom_template(
   >,
 ) {
   await Deno.mkdir(".output", { recursive: true });
-  const originalContent = options.content;
   for (const [k, v] of Object.entries(options.dictionary)) {
     options.content = options.content.replaceAll(k, `{{${v}}}`);
   }
