@@ -62,10 +62,22 @@ export async function gen_file_by_custom_template(
             },
             transform(content: string) {
               const transformedContent = content
-                .replaceAll(/^\s*\/\/ dd_RM_LINE_bb\s*$/g, "")
-                .replaceAll(/^\s*\/\/ dd_REPLACE_LINE_bb/g, "")
-                .replaceAll("// dd_options_bb", "// TODO options")
-                .replaceAll("// dd_prompts_bb", "// TODO prompts");
+                .replaceAll("// dd_options_bb", "{} // TODO options")
+                .replaceAll("// dd_prompts_bb", "{} // TODO prompts")
+                .split("\n").map((line) => {
+                  if (line.includes("// dd_RM_LINE_bb")) {
+                    return "";
+                  }
+                  if (line.includes("// dd_REPLACE_LINE_bb")) {
+                    const REPLACE_MARKER = "// dd_REPLACE_LINE_bb";
+                    const lastRmIndex = line.lastIndexOf(
+                      REPLACE_MARKER,
+                    );
+                    return line.substring(lastRmIndex + REPLACE_MARKER.length);
+                  }
+
+                  return line;
+                }).join("\n");
 
               return transformedContent;
             },
